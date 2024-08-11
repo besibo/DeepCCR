@@ -1,4 +1,6 @@
-library(tidyverse) ; library(DeepDiveR)
+remotes::install_github("besibo/Deep_CCR")
+
+library(tidyverse) ; library(Deep_CCR)
 
 # Dive parameters
 Max_depth <- 98
