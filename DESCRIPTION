@@ -1,10 +1,10 @@
-Package: DeepDiveR
+Package: Deep_CCR
 Type: Package
 Title: Deco planning of multigas deep dives
 Version: 0.1.0
 Author: Benoit Simon-Bouhet
 Maintainer: Benoit Simon-Bouhet <besibo@gmail.com>
-Description: Given a set of parameters for a dive (e.g. maximum depth, time, gas mixes available, factor gradients, descent and ascent rates...) DeepDiveR uses the factor-gradient Bühlmann model with 16 compartments to provide the full decompression planning for the dive. DeepDiveR allows the use of up to 5 gas mixes (with any composition of O2, N2 and He). 
+Description: Given a set of parameters for a dive (e.g. maximum depth, time, gas mixes available, factor gradients, descent and ascent rates...) Deep_CCR uses the factor-gradient Bühlmann model with 16 compartments to provide the full decompression planning for the dive. Deep_CCR allows the use of up to 5 gas mixes (with any composition of O2, N2 and He). 
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
