@@ -1,3 +1,7 @@
+remotes::install_github("besibo/DeepCCR")
+
+library(tidyverse) ; library(DeepCCR)
+
 source("R/Create_ZHL16_C.R")
 
 # Dive parameters

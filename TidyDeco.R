@@ -1,4 +1,4 @@
-remotes::install_github("besibo/Deep_CCR")
+remotes::install_github("besibo/DeepCCR")
 
 library(tidyverse) ; library(DeepDiveR)
 
