@@ -1,6 +1,6 @@
 remotes::install_github("besibo/Deep_CCR")
 
-library(tidyverse) ; library(Deep_CCR)
+library(tidyverse) ; library(DeepDiveR)
 
 # Dive parameters
 Max_depth <- 98
@@ -20,7 +20,7 @@ Manual_gaz_change_up <- FALSE   ; Gaz_change_up <- c(60,30,6)
 colnames(Gas_list) <- c("O2", "He")
 Gas_list <- as.tibble(Gas_list) %>%
     mutate(N2 = 100 - O2 - He) %>%
-    select(O2, N2, He) %>%
+    relocate(O2, N2, He) %>%
     arrange(O2)
 
 # 2. Compute Minimum and Maximum Operating Depths for each gaz

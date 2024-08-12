@@ -6,7 +6,6 @@
 #' @return A tibble containing one row for each segment of the ascent
 #' @export
 #'
-#' @examples
 Create_ascent_gas_tbl <- function(Gas_list, Max_depth){
     # First, we create a vector of all potential stops from Max_depth to the surface
     Pit_stops <- rev(seq(0, Max_depth, 3))
@@ -21,7 +20,7 @@ Create_ascent_gas_tbl <- function(Gas_list, Max_depth){
     Pit_stops <- Pit_stops[-length(Pit_stops)]
 
     # Then, we switch to the tibble format
-    Ascent_gas <- tibble::as.tibble(matrix(Pit_stops, ncol=2, byrow = TRUE))
+    Ascent_gas <- tibble::as_tibble(matrix(Pit_stops, ncol = 2, byrow = TRUE))
     Ascent_gas <- Ascent_gas[-nrow(Ascent_gas),]
     colnames(Ascent_gas) <- c("Start_depth", "End_depth")
 
