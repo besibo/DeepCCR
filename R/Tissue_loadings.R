@@ -1,36 +1,43 @@
 #' Computes loadings in N2 and He for the 16 tissues defined by Bühlmann (table ZH-L16 C)
 #'
-#' @param Segment a one row tibble containing (at least) the following variables: N2, He, Start_depth, End_depth, Duration, N2_Load_Start and He_Load_Start
-#' @param Penalty either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model)
-Tissue_loadings <- function(Segment, Penalty = 3) {
+#' @param N2 Double. The fraction of N2 in the gas mix
+#' @param He Double. The fraction of He in the gas mix
+#' @param depth_start Double. The depth at the start of the segment in meters
+#' @param depth_end Double. The depth at the end of the segment in meters
+#' @param duration Double. The duration of the segment in minutes (or in fraction of a minute)
+#' @param N2_load_start a vector of 16 values representing the N2 loadings at the start of the segment
+#' @param He_load_start a vector of 16 values representing the He loadings at the start of the segment
+#' @param penalty either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model)
+Tissue_loadings <- function(N2, He, depth_start, depth_end, duration, N2_load_start, He_load_start, penalty = 3) {
 
-    Period <- ZHL16_C %>% select(Molecule, Periode)
-    Ambiant_pressure <- Segment$Start_depth + 10
+    period <- ZHL16_C %>% select(Molecule, Periode)
+    ambiant_pressure <- depth_start + 10
 
-    Quot	<- c(0.627,0.567,0.493)
-    P_H2O	<- Quot[Penalty]
-    Pi_N2	<- (Ambiant_pressure - P_H2O) * Segment$N2 / 100
-    Pi_He	<- (Ambiant_pressure - P_H2O) * Segment$He / 100
+    quot	<- c(0.627,0.567,0.493)
+    p_H2O	<- quot[penalty]
+    pi_N2	<- (ambiant_pressure - p_H2O) * N2
+    pi_He	<- (ambiant_pressure - p_H2O) * He
 
-    if (Segment$Start_depth != Segment$End_depth) {
-        Speed <- round((Segment$End_depth-Segment$Start_depth)/Segment$Duration)
-        R_N2 <- Speed * Segment$N2 / 100
-        R_He <- Speed * Segment$He / 100
+    if (depth_start != depth_end) {
+        speed <- round((depth_end - depth_start) / duration)
+        r_N2 <- speed * N2
+        r_He <- speed * He
     } else {
-        R_N2 <- 0
-        R_He <- 0
+        r_N2 <- 0
+        r_He <- 0
     }
 
-    K <- log(2) / Period$Periode
+    K <- log(2) / period$Periode
     K_N2 <- K[1:16]
     K_He <- K[17:32]
 
-    Po_N2 <- Segment$N2_Load_Start[[1]]
-    Po_He <- Segment$He_Load_Start[[1]]
+    po_N2 <- N2_load_start[[1]]
+    po_He <- He_load_start[[1]]
 
-    t <- Segment$Duration
+    t <- duration
 
-    P_N2 <- Pi_N2 + R_N2 * (t - 1/K_N2) - (Pi_N2 - Po_N2 - R_N2/K_N2) * exp(-K_N2 * t)
-    P_He <- Pi_He + R_He * (t - 1/K_He) - (Pi_He - Po_He - R_He/K_He) * exp(-K_He * t)
-    list(P_N2, P_He)
+    p_N2 <- pi_N2 + r_N2 * (t - 1/K_N2) - (pi_N2 - po_N2 - r_N2 / K_N2) * exp(-K_N2 * t)
+    p_He <- pi_He + r_He * (t - 1/K_He) - (pi_He - po_He - r_He / K_He) * exp(-K_He * t)
+    
+    return(list(p_N2, p_He))
 }
