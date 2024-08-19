@@ -1,7 +1,7 @@
 # remotes::install_github("besibo/DeepCCR")
 library(tidyverse) ; library(DeepCCR)
 
-source("R/Create_ZHL16_C.R")
+source("R/create_ZHL16_C.R")
 
 # 1. Dive parameters
 max_depth <- 35
@@ -84,7 +84,7 @@ dive_tbl <- bind_rows(desc_tbl, bottom_tbl, asc_tbl) |>
 dive_tbl$N2_load_start[[1]] <- rep((10 - p_H2O) * 0.795, 16)
 
 seg1 <- dive_tbl[1,] 
-tmp <- Tissue_loadings(N2 = seg1$N2_start, 
+tmp <- tissue_loadings(N2 = seg1$N2_start, 
                        He = seg1$He_start, 
                        depth_start = seg1$depth_start, 
                        depth_end = seg1$depth_end, 
@@ -100,7 +100,7 @@ dive_tbl$He_load_end[[1]] <- tmp[[2]]
 for (i in 2:nrow(dive_tbl)) {
   dive_tbl$N2_load_start[[i]] <- dive_tbl$N2_load_end[[i-1]]
   dive_tbl$He_load_start[[i]] <- dive_tbl$He_load_end[[i-1]]
-  tmp <- Tissue_loadings(N2 = dive_tbl$N2_start[i], 
+  tmp <- tissue_loadings(N2 = dive_tbl$N2_start[i], 
                          He = dive_tbl$He_start[i], 
                          depth_start = dive_tbl$depth_start[i], 
                          depth_end   = dive_tbl$depth_end[i], 

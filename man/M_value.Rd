@@ -4,14 +4,14 @@
 \alias{M_value}
 \title{Computes the M-values at the end of a segment, for each of the 16 tissues defined by Bühlmann (table ZH-L16 C), for both N2 and He.}
 \usage{
-M_value(N2_Load_End, He_Load_End, End_depth)
+M_value(N2_load_end, He_load_end, depth_end)
 }
 \arguments{
-\item{N2_Load_End}{Double. The N2 loading at the end of the segment.}
+\item{N2_load_end}{Double. The N2 loading at the end of the segment.}
 
-\item{He_Load_End}{Double. The He loading at the end of the segment.}
+\item{He_load_end}{Double. The He loading at the end of the segment.}
 
-\item{End_depth}{Double. The depth at the end of the segment.}
+\item{depth_depth}{Double. The depth at the end of the segment.}
 }
 \description{
 Computes the M-values at the end of a segment, for each of the 16 tissues defined by Bühlmann (table ZH-L16 C), for both N2 and He.

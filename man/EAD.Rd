@@ -3,13 +3,13 @@
 \name{EAD}
 \alias{EAD}
 \title{EAD computes the Maximum Equivalent Air Depth (EAD) of one or several gas at Max_depth
-N2: tibble, vector or scalar (dbl). Fraction of N2 in the gas in percent
-Max_depth: tibble, vector or scalar (dlb). Maximum depth of the dive in meters (msw)}
+N2: tibble, vector or scalar (dbl). Fraction of N2 in the gas mix
+depth: tibble, vector or scalar (dlb). Current depth of the dive in meters (msw)}
 \usage{
-EAD(N2, Depth)
+EAD(N2, depth)
 }
 \description{
 EAD computes the Maximum Equivalent Air Depth (EAD) of one or several gas at Max_depth
-N2: tibble, vector or scalar (dbl). Fraction of N2 in the gas in percent
-Max_depth: tibble, vector or scalar (dlb). Maximum depth of the dive in meters (msw)
+N2: tibble, vector or scalar (dbl). Fraction of N2 in the gas mix
+depth: tibble, vector or scalar (dlb). Current depth of the dive in meters (msw)
 }
