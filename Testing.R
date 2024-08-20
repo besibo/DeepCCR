@@ -8,13 +8,13 @@ source("R/create_ZHL16_C.R")
 # 1. Dive parameters -----------------------------------------------------------
 
 # Set for each dive
-max_depth <- 75
-bottom_time <- 25
-diluent <- c(15, 60)  # Percent O2 and He in the diluent
+max_depth <- 50
+bottom_time <- 40
+diluent <- c(21, 00)  # Percent O2 and He in the diluent
 
 # Check for each dive
-gradient_low <- 0.20
-gradient_high <- 0.75
+gradient_low <- 0.85
+gradient_high <- 0.90
 
 ppO2_low <- 0.7
 ppO2_high <- 1.3
@@ -255,17 +255,9 @@ for (i in 1:nrow(stops_table)) {
     
 }
 
-stops_table |> 
-  print(n = Inf)
-
-
 dive_tbl <- dive_tbl |> 
   filter(! (phase == "ascent" & depth_start <= first_stop)) |> 
   bind_rows(stops_table)
-
-dive_tbl |> print(n = Inf)
-
-sum(stops_table$duration)
 
 # Adjust the length of the last stop so that the ascent from the last stop to 
 # the surface is done at a normal speed, without exceeding the gradient_high.
@@ -301,10 +293,9 @@ dive_tbl <- dive_tbl |>
 
 dive_tbl |> print(n = Inf)
 
-
-
-
-
+dive_tbl |> 
+  filter(phase == "deco") |>
+  summarise(total_deco_time = sum(duration))
 
 
 
@@ -316,7 +307,7 @@ library(scales)
 
 # Dive profile
 dive_tbl |> 
-  ggplot(aes(x = time_start, y = depth_start, color = O2_start)) +
+  ggplot(aes(x = time_end, y = depth_end, color = O2_end)) +
   geom_line() +
   geom_point() +
   scale_y_reverse() +
@@ -338,7 +329,7 @@ dive_tbl |>
   geom_line() +
   facet_wrap(~inert_gas) +
   scale_color_viridis_d(option = "A") +
-  labs(title = "Tissue loadings",
+  labs(title = "Compartment loadings",
        x = "Time (min)",
        y = "Loadings",
        color = "Tissue") +
@@ -370,7 +361,7 @@ dive_tbl |>
   ggplot(aes(x = depth_end, y = percent_gradient, color = factor(tissue))) +
   geom_line() +
   geom_line(aes(y = target_GF), color = "grey20", linetype = 3) +
-  geom_point(size = 0.5) +
+  geom_point() +
   geom_vline(xintercept = first_stop, linetype = "dashed") +
   scale_color_viridis_d(option = "A") +
   scale_x_reverse() +
@@ -384,18 +375,18 @@ dive_tbl |>
 # 9. Extract usefull information -----------------------------------------------
 
 # descent
-
-ppO2_switch_descent <- dive_tbl |> filter(phase == "descent", ppO2_mix_start != ppO2_mix_end)
-
-  
-    
-  select(phase, depth_start, depth_end, time_start, time_end, 
-         ppO2_mix_start, ppO2_mix_end, 
-         O2_start, N2_start, He_start, 
-         O2_end, N2_end, He_end, 
-         EAD_start, EAD_end, 
-         leading_compartment, leading_tension, max_percent_gradient) |>
-  filter(row_number()==1 | row_number()==n(), .by = phase) |> 
-  filter()
-
+# 
+# ppO2_switch_descent <- dive_tbl |> filter(phase == "descent", ppO2_mix_start != ppO2_mix_end)
+# 
+#   
+#     
+#   select(phase, depth_start, depth_end, time_start, time_end, 
+#          ppO2_mix_start, ppO2_mix_end, 
+#          O2_start, N2_start, He_start, 
+#          O2_end, N2_end, He_end, 
+#          EAD_start, EAD_end, 
+#          leading_compartment, leading_tension, max_percent_gradient) |>
+#   filter(row_number()==1 | row_number()==n(), .by = phase) |> 
+#   filter()
+# 
 
