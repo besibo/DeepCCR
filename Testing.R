@@ -172,7 +172,7 @@ dive_tbl <- dive_tbl |>
          max_percent_gradient = map_dbl(percent_gradient, ~max(.x)))
 
 
-# 6. Where are the deco zone and first stop? -----------------------------------
+# 7. Where are the deco zone and first stop? -----------------------------------
 
 start_deco_zone <- dive_tbl |> 
   mutate(deco_zone = ambiant_pressure_end * 10 - leading_tension) |> 
@@ -192,7 +192,8 @@ first_stop <- dive_tbl |>
 tmp2 <- seq(gradient_low * 100, gradient_high * 100, 
             length.out = length(first_stop:1))
 # remove the last 3 values of tmp2
-tmp2 <- c(tmp2[-((length(tmp2)-2):length(tmp2))], gradient_high * 100)
+tmp2 <- c(tmp2[-((length(tmp2)-(last_stop - 1)):length(tmp2))], 
+          gradient_high * 100)
 
 stops_table <- dive_tbl |> 
   filter(phase == "ascent", depth_start <= first_stop) |> 
@@ -268,8 +269,45 @@ sum(stops_table$duration)
 
 # Adjust the length of the last stop so that the ascent from the last stop to 
 # the surface is done at a normal speed, without exceeding the gradient_high.
-stops_table |> 
+
+last_tbl <- stops_table |> 
   tail(2)
+
+# Fix the duration of the last ascent segment
+last_tbl[2,]$duration <- (last_tbl[2,]$depth_start - last_tbl[2,]$depth_end) / speed_asc
+
+# Recompute the loadings of the last ascent segment
+last_tbl <- last_ascent(last_tbl, penalty)
+
+while (last_tbl$max_percent_gradient[2] > last_tbl$target_GF[2]) {
+  
+last_tbl <- increase_stop_duration(last_tbl, steps, penalty)
+
+last_tbl$time_start[2] <- last_tbl$time_end[1]
+last_tbl$time_end[2] <- last_tbl$time_start[2] + last_tbl$duration[2]
+last_tbl$N2_load_start[[2]] <- last_tbl$N2_load_end[[1]]
+last_tbl$He_load_start[[2]] <- last_tbl$He_load_end[[1]]
+
+last_tbl <- last_ascent(last_tbl, penalty)
+
+}
+
+last_tbl
+
+# Replace last 2 rows of dive_tbl by last_tbl
+dive_tbl <- dive_tbl |> 
+  filter(!(phase == "deco" & depth_start <= (last_stop+1))) |> 
+  bind_rows(last_tbl)
+
+dive_tbl |> print(n = Inf)
+
+
+
+
+
+
+
+
 
 
 

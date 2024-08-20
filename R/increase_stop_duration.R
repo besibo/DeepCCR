@@ -6,6 +6,7 @@
 increase_stop_duration <- function(last_tbl, steps, penalty = 3) {
 
   last_tbl[1, ]$duration <- last_tbl[1, ]$duration + steps
+  last_tbl[1, ]$time_end <- last_tbl[1, ]$time_start + last_tbl[1, ]$duration
   
   # New loadings
   tmp <- tissue_loadings(
