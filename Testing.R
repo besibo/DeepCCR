@@ -1,8 +1,8 @@
 # 0. Installing and loading packages and datasets ------------------------------
 
 remotes::install_github("besibo/DeepCCR")
-library(tidyverse) ; library(DeepCCR)
-source("R/create_ZHL16_C.R")
+library(DeepCCR)
+library(tidyverse)
 
 
 # 1. Dive parameters -----------------------------------------------------------
@@ -43,31 +43,11 @@ steps <- 0.25
 # and end depth, and a start and end time. The composition of the breathing gas
 # is assumed to be constant within each segment.
 
-# Table for the descent
-desc_tbl <- tibble(phase = "descent",
-                   depth_start = 0:(max_depth-1),
-                   depth_end   = 1:(max_depth)) |> 
-  mutate(time_start = depth_start * (1 / speed_desc),
-         time_end   = depth_end   * (1 / speed_desc))
-
-# Table for the bottom
-bottom_tbl <- tibble(phase = "bottom",
-                     depth_start = max_depth,
-                     depth_end   = max_depth,
-                     time_start = last(desc_tbl$time_end),
-                     time_end   = bottom_time)
-
-# Table for the ascent. Deco stops will be added later
-asc_tbl <- tibble(
-  phase = "ascent",
-  depth_start = max_depth:last_stop,
-  depth_end   = c((max_depth-1):last_stop, 0),
-  time_start = last(bottom_tbl$time_end)+(max_depth-depth_start)*(1/speed_asc),
-  time_end   = last(bottom_tbl$time_end)+(max_depth-depth_end)*(1/speed_asc))
-
-# Bind these 3 tables and add columns to track the composition of the breathing 
-# gas and to compute tissue loadings, tensions, M-values and percent gradients.
-dive_tbl <- bind_rows(desc_tbl, bottom_tbl, asc_tbl) |>
+# Create a segments table and add columns to track the composition of the 
+# breathing gas and to compute tissue loadings, tensions, M-values and 
+# percent gradients.
+dive_tbl <- create_dive_segments(max_depth, bottom_time, 
+                                 speed_desc, speed_asc, last_stop) |>
   mutate(duration = time_end - time_start,   # Duration of each segment
          # Set appropriate ppO2 for each segment
          ppO2_mix_start = if_else(phase == "descent" & depth_start < ppO2_switch_depth |
