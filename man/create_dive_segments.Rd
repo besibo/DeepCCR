@@ -4,7 +4,13 @@
 \alias{create_dive_segments}
 \title{Create a table with the descent phase}
 \usage{
-create_dive_segments(max_depth, bottom_time, speed_desc, speed_asc, last_stop)
+create_dive_segments(
+  max_depth,
+  bottom_time,
+  speed_desc = 20,
+  speed_asc = 10,
+  last_stop = 4
+)
 }
 \arguments{
 \item{max_depth}{Double. The maximum depth of the dive (in meters)}

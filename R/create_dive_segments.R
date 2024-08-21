@@ -9,9 +9,9 @@
 #' @return A 5-column tibble with the diving phase, the start and end depth and time for each segment of the dive
 create_dive_segments <- function(max_depth,
                                  bottom_time,
-                                 speed_desc,
-                                 speed_asc,
-                                 last_stop) {
+                                 speed_desc = 20,
+                                 speed_asc = 10,
+                                 last_stop = 4) {
   # Table for the descent
   desc_tbl <- tibble(
     phase = "descent",
