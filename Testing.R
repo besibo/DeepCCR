@@ -30,8 +30,6 @@ ppO2_max <- 1.61
 
 # Never ever change, unless you have a very good reason !
 penalty <- 3
-quot	<- c(0.627,0.567,0.493)  # Do not change these values!
-p_H2O	<- quot[penalty]
 steps <- 0.25
 
 
@@ -48,50 +46,7 @@ steps <- 0.25
 # percent gradients.
 dive_tbl <- create_dive_segments(max_depth, bottom_time, 
                                  speed_desc, speed_asc, last_stop) |>
-  mutate(duration = time_end - time_start,   # Duration of each segment
-         # Set appropriate ppO2 for each segment
-         ppO2_mix_start = if_else(phase == "descent" & depth_start < ppO2_switch_depth |
-                                  phase == "ascent" & depth_start <= 3,
-                                  ppO2_low, 
-                                  ppO2_high),
-         ppO2_mix_end = if_else(phase == "descent" & depth_end < ppO2_switch_depth |
-                                phase == "ascent" & depth_end <= 3,
-                                ppO2_low, 
-                                ppO2_high),         # Compute ambiant pressures at the start and end of each segment
-         ambiant_pressure_start = depth_start / 10 + 1,
-         ambiant_pressure_end   = depth_end / 10 + 1,
-         # Composition of the breathing gas at the start and end of each segment
-         mix_start  = map2(ppO2_mix_start, 
-                           depth_start,
-                           ~ loop_mix(diluent, .x, .y)),
-         mix_end    = map2(ppO2_mix_end, 
-                           depth_end,   
-                           ~ loop_mix(diluent, .x, .y))) |> 
-  unnest_wider(c(mix_start, mix_end), names_sep = "_") |>
-  # Rename columns for the compistion of the breathing gas
-  rename(O2_start = mix_start_1,
-         N2_start = mix_start_2,
-         He_start = mix_start_3,
-         O2_end   = mix_end_1,
-         N2_end   = mix_end_2,
-         He_end   = mix_end_3) |> 
-  # Partial pressures for inert gases at the start and end of each segment
-  mutate(ppN2_mix_start = N2_start * ambiant_pressure_start,
-         ppHe_mix_start = He_start * ambiant_pressure_start,
-         ppN2_mix_end   = N2_end * ambiant_pressure_end,
-         ppHe_mix_end   = He_end * ambiant_pressure_end,
-         # Compute equivalent aire depth (for nitrogen narcosis)
-         EAD_start = EAD(N2_start, depth_start),
-         EAD_end = EAD(N2_end, depth_end),
-         # Initialize columns for tissue loadings
-         N2_load_start = list(rep(0,16)),
-         N2_load_end = list(rep(0,16)),
-         He_load_start = list(rep(0,16)),
-         He_load_end = list(rep(0,16)),
-         # Initialize columns for tensions, M-values and percent gradients
-         M_val = list(rep(0,16)),
-         tension = list(rep(0,16)),
-         percent_gradient = list(rep(0,16)))
+            compute_mix(ppO2_low, ppO2_high, ppO2_switch_depth, diluent)
 
 
 # 3. Initialize tissue loadings for both N2 and He (first segment) -------------
