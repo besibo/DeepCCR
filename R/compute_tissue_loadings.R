@@ -1,6 +1,6 @@
-#' Compute tis loadings for a dive table using the Buhlmann ZHL-16C model.
+#' Compute compartment loadings for a dive table using the Buhlmann ZHL-16C model.
 #' 
-#' @param dive_tbl Tibble. A dive table for which the loadings of the first segment have already been computed with the function \code{initialize_tissue_loadings}.
+#' @param dive_tbl Tibble. A dive table for which the loadings of the first segment have already been computed with the function \code{link{initialize_tissue_loadings}}.
 #' @param penalty Integer. Either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model).
 #' @return The same tibble as input, with the columns N2_load_start, N2_load_end, He_load_start and He_load_end filled with the tissue loadings for all segments of the dive.
 compute_tissue_loadings <- function(dive_tbl, penalty = 3){

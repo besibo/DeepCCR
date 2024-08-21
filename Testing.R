@@ -41,47 +41,19 @@ steps <- 0.25
 # and end depth, and a start and end time. The composition of the breathing gas
 # is assumed to be constant within each segment.
 
-# Create a segments table and add columns to track the composition of the 
-# breathing gas and to compute tissue loadings, tensions, M-values and 
-# percent gradients.
-dive_tbl <- create_dive_segments(max_depth, bottom_time, 
-                                 speed_desc, speed_asc, last_stop) |>
-            compute_mix(ppO2_low, ppO2_high, ppO2_switch_depth, diluent)
-
-
-# 3. Initialize tissue loadings for both N2 and He (first segment) -------------
-
-dive_tbl <- initialize_tissue_loadings(dive_tbl, penalty)
-
-# 4. Compute tissue loadings for all other segments ----------------------------
-
-for (i in 2:nrow(dive_tbl)) {
-  dive_tbl$N2_load_start[[i]] <- dive_tbl$N2_load_end[[i-1]]
-  dive_tbl$He_load_start[[i]] <- dive_tbl$He_load_end[[i-1]]
-  tmp <- tissue_loadings(N2 = dive_tbl$N2_start[i], 
-                         He = dive_tbl$He_start[i], 
-                         depth_start = dive_tbl$depth_start[i], 
-                         depth_end   = dive_tbl$depth_end[i], 
-                         N2_load_start = dive_tbl$N2_load_start[i], 
-                         He_load_start = dive_tbl$He_load_start[i], 
-                         duration = dive_tbl$duration[i],
-                         penalty = penalty)
-  dive_tbl$N2_load_end[[i]] <- tmp[[1]]
-  dive_tbl$He_load_end[[i]] <- tmp[[2]]
-}
-
-
-# 5. Compute M-values, tensions and percent_gradient for all segments ----------
-
-for (i in 1:nrow(dive_tbl)) {
-  dive_tbl$M_val[[i]] <- M_value(dive_tbl$N2_load_end[i], 
-                                 dive_tbl$He_load_end[i], 
-                                 dive_tbl$depth_end[i])
-  dive_tbl$tension[[i]] <- dive_tbl$N2_load_end[[i]] + dive_tbl$He_load_end[[i]]
-  dive_tbl$percent_gradient[[i]] <- percent_gradient(dive_tbl$tension[[i]], 
-                                                     dive_tbl$depth_end[i], 
-                                                     dive_tbl$M_val[[i]])
-}
+# The code below does the following:
+# a. Creates a segments table 
+# b. Adds columns to track the composition of the breathing gas and empty
+#    columns for later computations
+# c. Initializes compartment loadings for both N2 and He for the first segment
+# d. Computes the compartment loadings for all other segments based on the 1st
+# e. Compute M-values, tensions and percent_gradient for all segments
+dive_tbl <- max_depth |> 
+  create_dive_segments(bottom_time, speed_desc, speed_asc, last_stop) |>
+  compute_mix(ppO2_low, ppO2_high, ppO2_switch_depth, diluent) |> 
+  initialize_tissue_loadings(penalty) |> 
+  compute_tissue_loadings(penalty) |> 
+  deco_data()
 
 # 6. Which compartment is leading? ---------------------------------------------
 
