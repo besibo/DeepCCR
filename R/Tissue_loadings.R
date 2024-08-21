@@ -7,7 +7,7 @@
 #' @param duration Double. The duration of the segment in minutes (or in fraction of a minute)
 #' @param N2_load_start a vector of 16 values representing the N2 loadings at the start of the segment
 #' @param He_load_start a vector of 16 values representing the He loadings at the start of the segment
-#' @param penalty either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model)
+#' @param penalty Integer. Either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model)
 tissue_loadings <- function(N2, He, depth_start, depth_end, duration, N2_load_start, He_load_start, penalty = 3) {
 
     period <- ZHL16_C %>% select(Molecule, Periode)

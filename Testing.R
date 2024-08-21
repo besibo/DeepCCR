@@ -51,23 +51,7 @@ dive_tbl <- create_dive_segments(max_depth, bottom_time,
 
 # 3. Initialize tissue loadings for both N2 and He (first segment) -------------
 
-dive_tbl$N2_load_start[[1]] <- rep((10 - p_H2O) * 0.795, 16)
-
-seg1 <- dive_tbl[1,] 
-tmp <- tissue_loadings(N2 = seg1$N2_start, 
-                       He = seg1$He_start, 
-                       depth_start = seg1$depth_start, 
-                       depth_end = seg1$depth_end, 
-                       duration = seg1$duration,
-                       N2_load_start = seg1$N2_load_start, 
-                       He_load_start = seg1$He_load_start, 
-                       penalty = penalty)
-
-dive_tbl$N2_load_end[[1]] <- tmp[[1]]
-dive_tbl$He_load_end[[1]] <- tmp[[2]]
-
-rm(seg1, tmp)
-
+dive_tbl <- initialize_tissue_loadings(dive_tbl, penalty)
 
 # 4. Compute tissue loadings for all other segments ----------------------------
 

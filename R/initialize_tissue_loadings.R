@@ -1,7 +1,7 @@
 #' Computes tissue loadings in N2 and He for the first segment of a dive
 #' 
 #' @param dive_tbl A tibble with dive segments as produced by \code{\link{compute_mix}}
-#' @param penalty Integer. Penalty value to be used in the calculation of the tissue loadings. Possible values are 1, 2 and 3 (default, the most conservative model)
+#' @param penalty Integer. Either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model)
 #' @return The same tibble as input, with the columns N2_load_start, N2_load_end, He_load_start and He_load_end filled with the tissue loadings for the first segment of the dive
 initialize_tissue_loadings <- function(dive_tbl, penalty = 3) {
   

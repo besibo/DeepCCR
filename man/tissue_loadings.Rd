@@ -30,7 +30,7 @@ tissue_loadings(
 
 \item{He_load_start}{a vector of 16 values representing the He loadings at the start of the segment}
 
-\item{penalty}{either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model)}
+\item{penalty}{Integer. Either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model)}
 }
 \description{
 Computes loadings in N2 and He for the 16 tissues defined by Bühlmann (table ZH-L16 C)
