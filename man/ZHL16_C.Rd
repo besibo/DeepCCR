@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_ZHL16_C.R
 \name{ZHL16_C}
 \alias{ZHL16_C}
-\title{Creates a tibble containing each of Bühlmann's values for its 16-compartment model}
+\title{Creates a}
 \description{
-Creates a tibble containing each of Bühlmann's values for its 16-compartment model
+Creates a
 }

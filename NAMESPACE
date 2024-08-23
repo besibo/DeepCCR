@@ -2,4 +2,5 @@
 
 export(adjust_last_stop_duration)
 export(deco_zone)
+export(first_deco_stop)
 export(leading_tissue)

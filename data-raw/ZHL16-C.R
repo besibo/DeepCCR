@@ -1,7 +1,7 @@
-#' Creates a 
-#'
-#' @name ZHL16_C
-require(tidyverse)
+## code to prepare `ZHL16-C` dataset goes here
+## tibble containing each of Bühlmann's values for its 16-compartment model
+
+require(tibble)
 
 ZHL16_C <- tibble(
   Compartment = rep(1:16, 2),
@@ -19,3 +19,6 @@ ZHL16_C <- tibble(
         0.6526989, 0.7222824, 0.7582076, 0.7956715, 0.8278831, 0.8552857, 
         0.8757334, 0.8903134, 0.8996851, 0.9072764, 0.9121591, 0.9170946, 
         0.9216590, 0.9266982))
+
+
+usethis::use_data(ZHL16-C, overwrite = TRUE)

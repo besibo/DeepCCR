@@ -57,21 +57,13 @@ dive_tbl <- max_depth |>
   deco_data() |> 
   leading_tissue()
 
-# 7. Where are the deco zone and first stop? -----------------------------------
+# 3. Where are the deco zone and first stop? -----------------------------------
 
-start_deco_zone <- dive_tbl |> 
-  mutate(deco_zone = ambiant_pressure_end * 10 - leading_tension) |> 
-  filter(deco_zone < 0) |>
-  first() |>
-  pull(depth_start)
-
-first_stop <- dive_tbl |> 
-  filter(max_percent_gradient >= gradient_low * 100) |>
-  first() |>
-  pull(depth_start)
+start_deco_zone <- deco_zone(dive_tbl)
+first_stop <- first_deco_stop(dive_tbl, gradient_low)
 
 
-# 7. Add deco stops -----------------------------------------------------------
+# 4. Add deco stops -----------------------------------------------------------
 
 # Compute the gradient factors for each possible stop
 tmp2 <- seq(gradient_low * 100, gradient_high * 100, 
