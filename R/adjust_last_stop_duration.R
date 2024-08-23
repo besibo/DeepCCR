@@ -3,7 +3,13 @@
 #' @param last_tbl A data frame with the last 2 segment of the dive
 #' @param steps Double. How much time should we add to the stop (decimal minutes)
 #' @param penalty Integer. The penalty for the tissue loadings
-increase_stop_duration <- function(last_tbl, steps, penalty = 3) {
+#'
+#' @return The same 2-row tibble with appropriate duration for the last stop and adjusted values for all other varibales
+#' @export
+#'
+#' @examples
+#' 
+adjust_last_stop_duration <- function(last_tbl, steps, penalty = 3) {
 
   last_tbl[1, ]$duration <- last_tbl[1, ]$duration + steps
   last_tbl[1, ]$time_end <- last_tbl[1, ]$time_start + last_tbl[1, ]$duration

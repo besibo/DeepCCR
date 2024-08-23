@@ -8,8 +8,8 @@ library(tidyverse)
 # 1. Dive parameters -----------------------------------------------------------
 
 # Set for each dive
-max_depth <- 50
-bottom_time <- 40
+max_depth <- 45
+bottom_time <- 50
 diluent <- c(21, 00)  # Percent O2 and He in the diluent
 
 # Check for each dive
@@ -48,20 +48,14 @@ steps <- 0.25
 # c. Initializes compartment loadings for both N2 and He for the first segment
 # d. Computes the compartment loadings for all other segments based on the 1st
 # e. Compute M-values, tensions and percent_gradient for all segments
+# f. Get the leading compartment, its tension and % gradient for all segments
 dive_tbl <- max_depth |> 
   create_dive_segments(bottom_time, speed_desc, speed_asc, last_stop) |>
   compute_mix(ppO2_low, ppO2_high, ppO2_switch_depth, diluent) |> 
   initialize_tissue_loadings(penalty) |> 
   compute_tissue_loadings(penalty) |> 
-  deco_data()
-
-# 6. Which compartment is leading? ---------------------------------------------
-
-dive_tbl <- dive_tbl |> 
-  mutate(leading_compartment = map_int(tension, ~ which(.x == max(.x))),
-         leading_tension = map_dbl(tension, max),
-         max_percent_gradient = map_dbl(percent_gradient, ~max(.x)))
-
+  deco_data() |> 
+  leading_tissue()
 
 # 7. Where are the deco zone and first stop? -----------------------------------
 
@@ -164,7 +158,7 @@ last_tbl <- last_ascent(last_tbl, penalty)
 
 while (last_tbl$max_percent_gradient[2] > last_tbl$target_GF[2]) {
   
-last_tbl <- increase_stop_duration(last_tbl, steps, penalty)
+last_tbl <- adjust_last_stop_duration(last_tbl, steps, penalty)
 
 last_tbl$time_start[2] <- last_tbl$time_end[1]
 last_tbl$time_end[2] <- last_tbl$time_start[2] + last_tbl$duration[2]

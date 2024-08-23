@@ -173,8 +173,8 @@ deco.zone <- function(ppart.fond,prof.max,vit.rem,melange,periode) {
 # ===========================
 # = Pourcentage du gradient =
 # ===========================
-# Connaissant les M-values, la profondeur et les pressions partielles en gaz inerte dans chaque tissus, cette fonction calcul le pourcentage du gradient atteint par la saturation.
-# Autrement dit, cette fonction calcul é quel point les tensions sont proches des M-values en pourcentage de gradient, c'est é dire par rapport é la ligne de pression ambiante
+# Connaissant les M-values, la profondeur et les pressions partielles en gaz inerte dans chaque tissus, cette fonction calcule le pourcentage du gradient atteint par la saturation.
+# Autrement dit, cette fonction calcul à quel point les tensions sont proches des M-values en pourcentage de gradient, c'est à dire par rapport à la ligne de pression ambiante
 pc.grad <- function(ppart,prof,Mval) {
     Pamb <- prof+10
     tension <- apply(ppart,1,sum)
@@ -279,7 +279,7 @@ BIGONE <- function (prof.max=90,temps=20,vit.desc=30,vit.rem=10,gradient=c(0.20,
     # ========================================================================================
     # = ====== DETERMINATION DE LA ZONE DE DECO ET DE LA PROFONDEUR DU PREMIER PALIER ====== =
     # ========================================================================================
-    # Au départ du fond, détermination de la zone oé commence la décompression. é partir de cette zone, ralentir la remontée é au moins 10 m/min
+    # Au départ du fond, détermination de la zone où commence la décompression. À partir de cette zone, ralentir la remontée à au moins 10 m/min
     dec.zone <- deco.zone(ppart.fond,prof.max,vit.rem,gaz,periode)
 
     #  Au départ du fond, détermination de la profondeur du premier palier é effectuer.
