@@ -2,7 +2,7 @@
 % Please edit documentation in R/tissue_loadings.R
 \name{tissue_loadings}
 \alias{tissue_loadings}
-\title{Computes loadings in N2 and He for the 16 tissues defined by Bühlmann (table ZH-L16 C)}
+\title{Computes loadings in N2 and He for the 16 compartments defined by Bühlmann's ZH-L16 C model}
 \usage{
 tissue_loadings(
   N2,
@@ -32,6 +32,13 @@ tissue_loadings(
 
 \item{penalty}{Integer. Either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model)}
 }
+\value{
+A list of two numeric vectors of length 16, the first one representing the N2 loadings and the second one the He loadings at the end of the segment
+}
 \description{
-Computes loadings in N2 and He for the 16 tissues defined by Bühlmann (table ZH-L16 C)
+Computes loadings in N2 and He for the 16 compartments defined by Bühlmann's ZH-L16 C model
+}
+\examples{
+tissue_loadings(N2 = 0.79, He = 0, depth_start = 0, depth_end = 10, 
+                duration = 1, N2_load_start = rep(0, 16), He_load_start = rep(0, 16))
 }

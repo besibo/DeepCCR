@@ -3,7 +3,12 @@
 #' @param diluent A numeric vector of length 3 with the fraction of O2, N2, and He in the diluent
 #' @param ppO2 Double. The desired ppO2 at the depth
 #' @param depth Double. The depth in meters
+
 #' @return A numeric vector of length 3 with the fraction of O2, N2, and He in the mix
+#' @export
+#' 
+#' @examples
+#' loop_mix(c(0.21, 0), 1.3, 45)
 loop_mix <- function(diluent, ppO2, depth) {
   # Switch diluent from percentages to fractions and add the missing gas (N2)
   diluent <- diluent / 100
@@ -16,7 +21,7 @@ loop_mix <- function(diluent, ppO2, depth) {
   ppO2_diluent <- diluent[1] * ambient_pressure
   
   if (ppO2_diluent > ppO2) {
-    stop(paste0("ppO2 at depth ", ppO2_diluent, " is higher than desired ppO2"))
+    stop(paste0("ppO2 at depth (", ppO2_diluent, ") is higher than desired ppO2"))
   }
   
   # Compute the disered percentage of oxygen at the depth

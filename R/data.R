@@ -45,13 +45,5 @@
 #'   \item{leading_tension}{The tension of the leading compartment at the end of the segment}
 #'   \item{max_percent_gradient}{The maximum percent gradient among all compartments at the end of the segment}
 #' }
-#' @example
-#' dive_table <- max_depth |> 
-#'    create_dive_segments(bottom_time) |>
-#'    compute_mix() |> 
-#'    initialize_tissue_loadings() |> 
-#'    compute_tissue_loadings() |> 
-#'    deco_data() |> 
-#'    leading_tissue()
 "dive_table"
 

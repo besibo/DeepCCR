@@ -1,4 +1,4 @@
-#' Computes loadings in N2 and He for the 16 tissues defined by Bühlmann (table ZH-L16 C)
+#' Computes loadings in N2 and He for the 16 compartments defined by Bühlmann's ZH-L16 C model
 #'
 #' @param N2 Double. The fraction of N2 in the gas mix
 #' @param He Double. The fraction of He in the gas mix
@@ -8,9 +8,17 @@
 #' @param N2_load_start a vector of 16 values representing the N2 loadings at the start of the segment
 #' @param He_load_start a vector of 16 values representing the He loadings at the start of the segment
 #' @param penalty Integer. Either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model)
+#' 
+#' @return A list of two numeric vectors of length 16, the first one representing the N2 loadings and the second one the He loadings at the end of the segment
+#' @export
+#' 
+#' @examples
+#' tissue_loadings(N2 = 0.79, He = 0, depth_start = 0, depth_end = 10, 
+#'                 duration = 1, N2_load_start = rep(0, 16), He_load_start = rep(0, 16))
 tissue_loadings <- function(N2, He, depth_start, depth_end, duration, N2_load_start, He_load_start, penalty = 3) {
 
-    period <- ZHL16_C %>% select(Molecule, Periode)
+    period <- ZHL16_C |> 
+      dplyr::select(Molecule, Periode)
     ambiant_pressure <- depth_start + 10
 
     quot	<- c(0.627,0.567,0.493)

@@ -59,7 +59,10 @@ dive_tbl <- max_depth |>
 
 # 3. Where are the deco zone and first stop? -----------------------------------
 
+# Depth at which compartments start off-gasing
 start_deco_zone <- deco_zone(dive_tbl)
+
+# Depth of the first mandatory stop
 first_stop <- first_deco_stop(dive_tbl, gradient_low)
 
 

@@ -2,17 +2,25 @@
 % Please edit documentation in R/M_value.R
 \name{M_value}
 \alias{M_value}
-\title{Computes the M-values at the end of a segment, for each of the 16 tissues defined by Bühlmann (table ZH-L16 C), for both N2 and He.}
+\title{Computes the N2 and He M-values at the end of a segment for each of the 16 compartments defined by Bühlmann's ZH-L16 C model.}
 \usage{
 M_value(N2_load_end, He_load_end, depth_end)
 }
 \arguments{
-\item{N2_load_end}{Double. The N2 loading at the end of the segment.}
+\item{N2_load_end}{Numeric vector. The N2 loadings of the 16 compartments at the end of the segment.}
 
-\item{He_load_end}{Double. The He loading at the end of the segment.}
+\item{He_load_end}{Numeric vector. The He loadings of the 16 compartments at the end of the segment.}
 
 \item{depth_depth}{Double. The depth at the end of the segment.}
 }
+\value{
+A numeric vector with the M-values for each of the 16 compartments at the end of the segment.
+}
 \description{
-Computes the M-values at the end of a segment, for each of the 16 tissues defined by Bühlmann (table ZH-L16 C), for both N2 and He.
+Computes the N2 and He M-values at the end of a segment for each of the 16 compartments defined by Bühlmann's ZH-L16 C model.
+}
+\examples{
+bottom <- dive_table |>
+ dplyr::filter(phase == "bottom") |>
+ M_value()
 }

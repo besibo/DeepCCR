@@ -7,8 +7,6 @@
 #' @return The same 2-row tibble with appropriate duration for the last stop and adjusted values for all other varibales
 #' @export
 #'
-#' @examples
-#' 
 adjust_last_stop_duration <- function(last_tbl, steps, penalty = 3) {
 
   last_tbl[1, ]$duration <- last_tbl[1, ]$duration + steps

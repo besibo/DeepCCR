@@ -2,7 +2,7 @@
 % Please edit documentation in R/percent_gradient.R
 \name{percent_gradient}
 \alias{percent_gradient}
-\title{Given the M-values, depth, and inert gas partial pressures in each compartment, this function calculates the percentage of the gradient achieved through saturation. In other words, it determines how close the compartment tensions are to the M-values, expressed as a percentage of the gradient from ambient pressure.}
+\title{Percentage of over-saturation in each compartment of Bühlmann' ZHL16-C model}
 \usage{
 percent_gradient(tension, depth, M_val)
 }
@@ -13,6 +13,23 @@ percent_gradient(tension, depth, M_val)
 
 \item{M_val}{numeric vector of M-values (16 values)}
 }
+\value{
+numeric. The percentage of over-saturation for each compartment
+}
 \description{
+Percentage of over-saturation in each compartment of Bühlmann' ZHL16-C model
+}
+\details{
 Given the M-values, depth, and inert gas partial pressures in each compartment, this function calculates the percentage of the gradient achieved through saturation. In other words, it determines how close the compartment tensions are to the M-values, expressed as a percentage of the gradient from ambient pressure.
+}
+\examples{
+first_seg <- dplyr::first(dive_table)
+last_seg <- dplyr::last(dive_table)
+percent_gradient(first_seg$tension[[1]],
+                first_seg$depth_end[1],
+                first_seg$M_val[[1]])
+percent_gradient(last_seg$tension[[1]], 
+                 last_seg$depth_end[1], 
+                 last_seg$M_val[[1]])
+                 
 }

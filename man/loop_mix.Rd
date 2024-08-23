@@ -19,3 +19,6 @@ A numeric vector of length 3 with the fraction of O2, N2, and He in the mix
 \description{
 Compute the mix of gases in the loop to achieve a desired ppO2 at a given depth
 }
+\examples{
+loop_mix(c(0.21, 0), 1.3, 45)
+}
