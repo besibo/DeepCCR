@@ -6,7 +6,6 @@
 #' @return The same tibble with the loadings, M-values, tensions, percent gradients, leading compartment, leading tension and max percent gradient of the last ascent segment recomputed.
 #' @export
 #'
-#' @examples
 last_ascent <- function(last_tbl, penalty = 3) {
 
   # Tissue loadings

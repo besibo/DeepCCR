@@ -2,14 +2,22 @@
 % Please edit documentation in R/EAD.R
 \name{EAD}
 \alias{EAD}
-\title{EAD computes the Maximum Equivalent Air Depth (EAD) of one or several gas at Max_depth
-N2: tibble, vector or scalar (dbl). Fraction of N2 in the gas mix
-depth: tibble, vector or scalar (dlb). Current depth of the dive in meters (msw)}
+\title{Computes the Equivalent Air Depth (EAD) of one or several gas at any depth}
 \usage{
 EAD(N2, depth)
 }
+\arguments{
+\item{N2}{Double. Fraction of N2 in the gas mix}
+
+\item{depth}{Double. Depth of the dive in meters}
+}
+\value{
+Double. Equivalent Air Depth (EAD) in meters
+}
 \description{
-EAD computes the Maximum Equivalent Air Depth (EAD) of one or several gas at Max_depth
-N2: tibble, vector or scalar (dbl). Fraction of N2 in the gas mix
-depth: tibble, vector or scalar (dlb). Current depth of the dive in meters (msw)
+Computes the Equivalent Air Depth (EAD) of one or several gas at any depth
+}
+\examples{
+EAD(N2 = 0.60, depth = 30)
+EAD(N2 = 0.30, depth = 100)
 }

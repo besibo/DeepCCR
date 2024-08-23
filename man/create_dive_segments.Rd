@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_dive_segments.R
 \name{create_dive_segments}
 \alias{create_dive_segments}
-\title{Create a table with the descent phase}
+\title{Creates a table with all segments of a dive}
 \usage{
 create_dive_segments(
   max_depth,
@@ -27,5 +27,8 @@ create_dive_segments(
 A 5-column tibble with the diving phase, the start and end depth and time for each segment of the dive
 }
 \description{
-Create a table with the descent phase
+Creates a table with all segments of a dive
+}
+\examples{
+create_dive_segments(max_depth = 40, bottom_time = 50)
 }
