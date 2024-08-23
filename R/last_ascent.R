@@ -1,6 +1,12 @@
 #' Recomputes the loadings of the last ascent segment
 #'
-#' @param last_tbl A data frame containing the last ascent segment
+#' @param last_tbl A tibble containing the last 2 segments of the dive (last stop and ascent to the surface)
+#' @param penalty Integer. Either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model).
+#'
+#' @return The same tibble with the loadings, M-values, tensions, percent gradients, leading compartment, leading tension and max percent gradient of the last ascent segment recomputed.
+#' @export
+#'
+#' @examples
 last_ascent <- function(last_tbl, penalty = 3) {
 
   # Tissue loadings

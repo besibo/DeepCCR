@@ -2,7 +2,7 @@
 % Please edit documentation in R/initialize_tissue_loadings.R
 \name{initialize_tissue_loadings}
 \alias{initialize_tissue_loadings}
-\title{Computes tissue loadings in N2 and He for the first segment of a dive}
+\title{Computes compartment loadings in N2 and He for the first segment of a dive}
 \usage{
 initialize_tissue_loadings(dive_tbl, penalty = 3)
 }
@@ -15,5 +15,8 @@ initialize_tissue_loadings(dive_tbl, penalty = 3)
 The same tibble as input, with the columns N2_load_start, N2_load_end, He_load_start and He_load_end filled with the tissue loadings for the first segment of the dive
 }
 \description{
-Computes tissue loadings in N2 and He for the first segment of a dive
+Computes compartment loadings in N2 and He for the first segment of a dive
+}
+\examples{
+initialize_tissue_loadings(dive_table)
 }

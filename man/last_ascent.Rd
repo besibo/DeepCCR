@@ -7,7 +7,12 @@
 last_ascent(last_tbl, penalty = 3)
 }
 \arguments{
-\item{last_tbl}{A data frame containing the last ascent segment}
+\item{last_tbl}{A tibble containing the last 2 segments of the dive (last stop and ascent to the surface)}
+
+\item{penalty}{Integer. Either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model).}
+}
+\value{
+The same tibble with the loadings, M-values, tensions, percent gradients, leading compartment, leading tension and max percent gradient of the last ascent segment recomputed.
 }
 \description{
 Recomputes the loadings of the last ascent segment
