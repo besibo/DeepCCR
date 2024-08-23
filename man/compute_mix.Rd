@@ -29,3 +29,7 @@ A tibble with the composition of the breathing gas at the start and end of each 
 \description{
 Compute the breathing gas mix for each dive segment and sets up the dive table for loadings computations
 }
+\examples{
+create_dive_segments(max_depth = 40, bottom_time = 50) |> 
+compute_mix()
+}

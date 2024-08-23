@@ -17,3 +17,6 @@ The same tibble as input, with the columns N2_load_start, N2_load_end, He_load_s
 \description{
 Compute compartment loadings for a dive table using the Buhlmann ZHL-16C model.
 }
+\examples{
+compute_tissue_loadings(dive_table)
+}
