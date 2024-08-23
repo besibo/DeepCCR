@@ -9,8 +9,10 @@
 #'
 #' @examples
 #' bottom <- dive_table |>
-#'  dplyr::filter(phase == "bottom") |>
-#'  M_value()
+#'  dplyr::filter(phase == "bottom")
+#' M_value(N2_load_end = bottom$N2_load_end, 
+#'         He_load_end = bottom$He_load_end, 
+#'         depth_end = bottom$depth_end)
 M_value <- function(N2_load_end, He_load_end, depth_end) {
   MV <- ZHL16_C |>
     dplyr::select(Compartment, a, b) |>

@@ -1,6 +1,6 @@
 # 0. Installing and loading packages and datasets ------------------------------
 
-remotes::install_github("besibo/DeepCCR")
+install_github("besibo/DeepCCR")
 library(DeepCCR)
 library(tidyverse)
 

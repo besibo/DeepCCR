@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-#' leading_tissue(dive_table))
+#' leading_tissue(dive_table)
 leading_tissue <- function(dive_tbl) {
   
   dive_tbl <- dive_tbl |> 

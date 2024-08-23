@@ -16,5 +16,5 @@ The same tibble with 3 more numeric (\code{<dbl>}) variables: \code{leading_comp
 Which tissue compartment is the leading one?
 }
 \examples{
-leading_tissue(dive_table))
+leading_tissue(dive_table)
 }
