@@ -11,7 +11,7 @@ M_value(N2_load_end, He_load_end, depth_end)
 
 \item{He_load_end}{Numeric vector. The He loadings of the 16 compartments at the end of the segment.}
 
-\item{depth_depth}{Double. The depth at the end of the segment.}
+\item{depth_end}{Double. The depth at the end of the segment.}
 }
 \value{
 A numeric vector with the M-values for each of the 16 compartments at the end of the segment.
@@ -25,4 +25,5 @@ bottom <- dive_table |>
 M_value(N2_load_end = bottom$N2_load_end, 
         He_load_end = bottom$He_load_end, 
         depth_end = bottom$depth_end)
+        
 }

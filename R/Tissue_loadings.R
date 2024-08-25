@@ -18,7 +18,7 @@
 tissue_loadings <- function(N2, He, depth_start, depth_end, duration, N2_load_start, He_load_start, penalty = 3) {
 
     period <- ZHL16_C |> 
-      dplyr::select(Molecule, Periode)
+      dplyr::select(.data$Molecule, .data$Periode)
     ambiant_pressure <- depth_start + 10
 
     quot	<- c(0.627,0.567,0.493)

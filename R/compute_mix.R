@@ -20,46 +20,46 @@ compute_mix <- function(dive_segments,
   dive_tbl <- dive_segments |>
     dplyr::mutate(
       # Duration of each segment
-      duration = time_end - time_start,
+      duration = .data$time_end - .data$time_start,
       # Set appropriate ppO2 for each segment
       ppO2_mix_start = dplyr::if_else(
-        phase == "descent" & depth_start < ppO2_switch_depth |
-        phase == "ascent" & depth_start <= 3,
+        .data$phase == "descent" & .data$depth_start < ppO2_switch_depth |
+        .data$phase == "ascent" & .data$depth_start <= 3,
         ppO2_low,
         ppO2_high
       ),
       ppO2_mix_end = dplyr::if_else(
-        phase == "descent" & depth_end < ppO2_switch_depth |
-        phase == "ascent" & depth_end <= 3,
+        .data$phase == "descent" & .data$depth_end < ppO2_switch_depth |
+        .data$phase == "ascent" & .data$depth_end <= 3,
         ppO2_low,
         ppO2_high
       ),
       # Compute ambiant pressures at the start and end of each segment
-      ambiant_pressure_start = depth_start / 10 + 1,
-      ambiant_pressure_end   = depth_end / 10 + 1,
+      ambiant_pressure_start = .data$depth_start / 10 + 1,
+      ambiant_pressure_end   = .data$depth_end / 10 + 1,
       # Composition of the breathing gas at the start and end of each segment
-      mix_start  = purrr::map2(ppO2_mix_start, depth_start, ~ loop_mix(diluent, .x, .y)),
-      mix_end    = purrr::map2(ppO2_mix_end, depth_end, ~ loop_mix(diluent, .x, .y))
+      mix_start  = purrr::map2(.data$ppO2_mix_start, .data$depth_start, ~ loop_mix(diluent, .x, .y)),
+      mix_end    = purrr::map2(.data$ppO2_mix_end, .data$depth_end, ~ loop_mix(diluent, .x, .y))
     ) |>
-    tidyr::unnest_wider(c(mix_start, mix_end), names_sep = "_") |>
+    tidyr::unnest_wider(c(.data$mix_start, .data$mix_end), names_sep = "_") |>
     # Rename columns for the compistion of the breathing gas
     dplyr::rename(
-      O2_start = mix_start_1,
-      N2_start = mix_start_2,
-      He_start = mix_start_3,
-      O2_end   = mix_end_1,
-      N2_end   = mix_end_2,
-      He_end   = mix_end_3
+      O2_start = .data$mix_start_1,
+      N2_start = .data$mix_start_2,
+      He_start = .data$mix_start_3,
+      O2_end   = .data$mix_end_1,
+      N2_end   = .data$mix_end_2,
+      He_end   = .data$mix_end_3
     ) |>
     # Partial pressures for inert gases at the start and end of each segment
     dplyr::mutate(
-      ppN2_mix_start = N2_start * ambiant_pressure_start,
-      ppHe_mix_start = He_start * ambiant_pressure_start,
-      ppN2_mix_end   = N2_end * ambiant_pressure_end,
-      ppHe_mix_end   = He_end * ambiant_pressure_end,
+      ppN2_mix_start = .data$N2_start * .data$ambiant_pressure_start,
+      ppHe_mix_start = .data$He_start * .data$ambiant_pressure_start,
+      ppN2_mix_end   = .data$N2_end * .data$ambiant_pressure_end,
+      ppHe_mix_end   = .data$He_end * .data$ambiant_pressure_end,
       # Compute equivalent aire depth (for nitrogen narcosis)
-      EAD_start = EAD(N2_start, depth_start),
-      EAD_end = EAD(N2_end, depth_end),
+      EAD_start = EAD(.data$N2_start, .data$depth_start),
+      EAD_end = EAD(.data$N2_end, .data$depth_end),
       # Initialize columns for tissue loadings
       N2_load_start = list(rep(0, 16)),
       N2_load_end = list(rep(0, 16)),

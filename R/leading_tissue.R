@@ -10,9 +10,10 @@
 leading_tissue <- function(dive_tbl) {
   
   dive_tbl <- dive_tbl |> 
-    dplyr::mutate(leading_compartment = purrr::map_int(tension, ~ which(.x == max(.x))),
-           leading_tension = purrr::map_dbl(tension, max),
-           max_percent_gradient = purrr::map_dbl(percent_gradient, ~max(.x)))
+    dplyr::mutate(
+      leading_compartment = purrr::map_int(.data$tension, ~ which(.x == max(.x))),
+      leading_tension = purrr::map_dbl(.data$tension, max),
+      max_percent_gradient = purrr::map_dbl(.data$percent_gradient, ~max(.x)))
   
   return(dive_tbl)
 }

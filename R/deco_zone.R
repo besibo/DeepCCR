@@ -10,9 +10,9 @@
 deco_zone <- function(dive_tbl) {
   
   dive_tbl |> 
-    dplyr::mutate(deco_zone = ambiant_pressure_end * 10 - leading_tension) |> 
+    dplyr::mutate(deco_zone = .data$ambiant_pressure_end * 10 - .data$leading_tension) |> 
     dplyr::filter(deco_zone < 0) |>
     dplyr::first() |>
-    dplyr::pull(depth_start)
+    dplyr::pull(.data$depth_start)
   
 }
