@@ -23,9 +23,9 @@
 #'         ppO2_switch_depth = 15, diluent = c(21, 00), penalty = 3, 
 #'         gradient_low = 0.85, gradient_high = 0.90, steps = 0.25)
 #' dive_profile |> print(n = Inf)
-profile <- function(max_depth, bottom_time, speed_desc, speed_asc, last_stop, 
-                    ppO2_low, ppO2_high, ppO2_switch_depth, diluent, penalty, 
-                    gradient_low, gradient_high, steps) {
+dive_profile <- function(max_depth, bottom_time, speed_desc, speed_asc, last_stop, 
+                         ppO2_low, ppO2_high, ppO2_switch_depth, diluent, penalty, 
+                         gradient_low, gradient_high, steps) {
   
   # 1. Create the dive table
   # When diving with a CCR, the composition of the breathing gas in the loop  

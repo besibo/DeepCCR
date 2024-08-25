@@ -34,9 +34,9 @@ steps <- 0.25
 
 
 # 2. Create the dive table -----------------------------------------------------
-dive_tbl <- profile(max_depth, bottom_time, speed_desc, speed_asc, last_stop, 
-                    ppO2_low, ppO2_high, ppO2_switch_depth, diluent, penalty, 
-                    gradient_low, gradient_high, steps)
+dive_tbl <- dive_profile(max_depth, bottom_time, speed_desc, speed_asc, 
+                         last_stop, ppO2_low, ppO2_high, ppO2_switch_depth, 
+                         diluent, penalty, gradient_low, gradient_high, steps)
 
 
 # 3. Print the dive segments and other usefull information ---------------------
@@ -44,10 +44,12 @@ dive_tbl <- profile(max_depth, bottom_time, speed_desc, speed_asc, last_stop,
 dive_tbl |> print(n = Inf)
 
 # Depth at which compartments start off-gasing
-deco_zone(dive_tbl)
+off_gasing_limit <- deco_zone(dive_tbl)
+off_gasing_limit
 
 # Depth of the first mandatory stop
-first_deco_stop(dive_tbl, gradient_low)
+first_stop <- first_deco_stop(dive_tbl, gradient_low)
+first_stop
 
 # Total time of the deco phase
 dive_tbl |> 
