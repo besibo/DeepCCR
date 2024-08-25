@@ -1,6 +1,10 @@
 #' Adjust the duration of the last stop so that the ascent from the last stop to the surface is done at a normal speed, and without exceeding the gradient_high value.
 #'
 #' @param dive_tbl A tibble with the dive profile where each row is a segment of the dive. All sgemnts should be correct except for the last 2 (last stop and ascent from the last stop to the surface)
+#' @param last_stop Double. The depth of the last decompression stop (in meters)
+#' @param speed_asc Double. The speed of the ascent (in meters per minute)
+#' @param penalty Integer. Either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model)
+#' @param steps Double. The time increment (in decimal minutes) to add to each deco stop in order to reavch the appropriate stop duration. Smaller values give more precise results but will increase the computation time
 #'
 #' @return The same tibble as \code{dive_tbl} but with the last 2 rows corrected
 #' @export
@@ -13,7 +17,7 @@
 #'  
 deco_last <- function(dive_tbl, last_stop = 4, speed_asc = 10, penalty = 3, steps = 0.25) {
 
-    last_tbl <- tail(dive_tbl, 2)
+    last_tbl <- utils::tail(dive_tbl, 2)
   
   # Fix the duration of the last ascent segment
   last_tbl[2, ]$duration <- (last_tbl[2, ]$depth_start - last_tbl[2, ]$depth_end) / speed_asc

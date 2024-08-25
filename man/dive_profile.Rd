@@ -45,18 +45,18 @@ dive_profile(
 
 \item{gradient_high}{Double. The high value of the factor gradient}
 
-\item{steps}{}
+\item{steps}{Double. The time increment (in decimal minutes) to add to each deco stop in order to reavch the appropriate stop duration. Smaller values give more precise results but will increase the computation time}
 }
 \value{
-A tibble with the dive profile where each row is a segment of the dive. See \link{\code{dive_table}} for a detailed description of each variable
+A tibble with the dive profile where each row is a segment of the dive. See \code{dive_table} for a detailed description of each variable
 }
 \description{
 Given a set of parameters for a dive, \code{profile} calculates the dive profile by slicing the dive into small segments of 1 meters and computing all decompression data for each segment up to the surface.
 }
 \examples{
-dive_profile <- profile(max_depth = 40, bottom_time = 50, speed_desc = 20, speed_asc = 10, 
+dive <- dive_profile(max_depth = 40, bottom_time = 50, speed_desc = 20, speed_asc = 10, 
         last_stop = 4, ppO2_low = 0.7, ppO2_high = 1.3, 
         ppO2_switch_depth = 15, diluent = c(21, 00), penalty = 3, 
         gradient_low = 0.85, gradient_high = 0.90, steps = 0.25)
-dive_profile |> print(n = Inf)
+dive |> print(n = Inf)
 }

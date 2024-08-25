@@ -8,6 +8,14 @@ deco_last(dive_tbl, last_stop = 4, speed_asc = 10, penalty = 3, steps = 0.25)
 }
 \arguments{
 \item{dive_tbl}{A tibble with the dive profile where each row is a segment of the dive. All sgemnts should be correct except for the last 2 (last stop and ascent from the last stop to the surface)}
+
+\item{last_stop}{Double. The depth of the last decompression stop (in meters)}
+
+\item{speed_asc}{Double. The speed of the ascent (in meters per minute)}
+
+\item{penalty}{Integer. Either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model)}
+
+\item{steps}{Double. The time increment (in decimal minutes) to add to each deco stop in order to reavch the appropriate stop duration. Smaller values give more precise results but will increase the computation time}
 }
 \value{
 The same tibble as \code{dive_tbl} but with the last 2 rows corrected

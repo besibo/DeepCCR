@@ -12,17 +12,17 @@
 #' @param penalty Integer. Either 1 (most permissive decompression model), 2 or 3 (default, most conservative decompression model)
 #' @param gradient_low Double. The low value of the factor gradient
 #' @param gradient_high Double. The high value of the factor gradient
-#' @param steps 
+#' @param steps Double. The time increment (in decimal minutes) to add to each deco stop in order to reavch the appropriate stop duration. Smaller values give more precise results but will increase the computation time
 #'
-#' @return A tibble with the dive profile where each row is a segment of the dive. See \link{\code{dive_table}} for a detailed description of each variable
+#' @return A tibble with the dive profile where each row is a segment of the dive. See \code{dive_table} for a detailed description of each variable
 #' @export
 #'
 #' @examples
-#' dive_profile <- profile(max_depth = 40, bottom_time = 50, speed_desc = 20, speed_asc = 10, 
+#' dive <- dive_profile(max_depth = 40, bottom_time = 50, speed_desc = 20, speed_asc = 10, 
 #'         last_stop = 4, ppO2_low = 0.7, ppO2_high = 1.3, 
 #'         ppO2_switch_depth = 15, diluent = c(21, 00), penalty = 3, 
 #'         gradient_low = 0.85, gradient_high = 0.90, steps = 0.25)
-#' dive_profile |> print(n = Inf)
+#' dive |> print(n = Inf)
 dive_profile <- function(max_depth, bottom_time, speed_desc, speed_asc, last_stop, 
                          ppO2_low, ppO2_high, ppO2_switch_depth, diluent, penalty, 
                          gradient_low, gradient_high, steps) {
