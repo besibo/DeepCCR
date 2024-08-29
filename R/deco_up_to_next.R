@@ -11,7 +11,7 @@
 #' 
 deco_up_to_next <- function(dive_tbl, steps = 0.25, penalty = 3) {
   
-  l <- dive_tbl |> last()
+  l <- dive_tbl |> dplyr::last()
   
   
     while (l$max_percent_gradient > l$target_GF) {
@@ -62,7 +62,7 @@ deco_up_to_next <- function(dive_tbl, steps = 0.25, penalty = 3) {
         
       }
 
-      l <- dive_tbl |> last()
+      l <- dive_tbl |> dplyr::last()
     
     
   }

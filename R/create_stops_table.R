@@ -31,15 +31,15 @@ create_stops_table <- function(dive_tbl, gradient_low = 0.85,
   # at first, each stop has a duration of 0 seconds
   # we also set ascent speed to 3 meters per second between stops
   stops_table <- dive_tbl |> 
-    filter(phase == "ascent" & depth_start <= stop_list[1]) |> 
-    mutate(phase = if_else(depth_start %in% stop_list, "stop", "deco"),
-           time_start = time_start[1] + (depth_start[1] - depth_start) * 1/3,
-           time_end = time_start + (depth_start - depth_end) * 1/3,
-           duration = time_end - time_start)
+    dplyr::filter(.data$phase == "ascent" & .data$depth_start <= stop_list[1]) |> 
+    dplyr::mutate(phase = dplyr::if_else(.data$depth_start %in% stop_list, "stop", "deco"),
+                  time_start = .data$time_start[1] + (.data$depth_start[1] - .data$depth_start) * 1/3,
+                  time_end = .data$time_start + (.data$depth_start - .data$depth_end) * 1/3,
+                  duration = .data$time_end - .data$time_start)
   
   final_table <- stops_table |> 
-    first() |> 
-    mutate(phase = "temp")
+    dplyr::first() |> 
+    dplyr::mutate(phase = "temp")
   
   for (i in 1:nrow(stops_table)) {
     
@@ -47,36 +47,37 @@ create_stops_table <- function(dive_tbl, gradient_low = 0.85,
     
     if (current_row$phase == "stop") {
       current_stop <- current_row |> 
-        mutate(depth_end = depth_start,
-               time_end = time_start,
-               duration = 0)
+        dplyr::mutate(depth_end = .data$depth_start,
+                      time_end = .data$time_start,
+                      duration = 0)
       
-      tmp_table <- bind_rows(current_stop, current_row)
+      tmp_table <- dplyr::bind_rows(current_stop, current_row)
     } else {
       tmp_table <- current_row
     }
     
-    final_table <- bind_rows(final_table, tmp_table)
+    final_table <- dplyr::bind_rows(final_table, tmp_table)
   }
   
   # Here, we add the target GF to the table and remove the temporary row
   stops_table <- final_table |> 
-    filter(phase != "temp") |> 
-    mutate(phase = if_else(depth_start == depth_end, "stop", "deco"),
-           target_GF = 100 * (depth_end * ((gradient_high - gradient_low) / (0 - first_stop)) + gradient_high)) |> 
-    relocate(target_GF, max_percent_gradient, .after = phase)
+    dplyr::filter(.data$phase != "temp") |> 
+    dplyr::mutate(phase = dplyr::if_else(.data$depth_start == .data$depth_end, "stop", "deco"),
+                  target_GF = 100 * (.data$depth_end * ((gradient_high - gradient_low) / (0 - first_stop)) + gradient_high)) |> 
+    dplyr::relocate(.data$target_GF, .data$max_percent_gradient, .after = .data$phase)
   
   # Segments are grouped in blocs of 2 consecutive stops and the ascent segments in between
   bloc <- list()
   for (i in 1:(length(stop_list) - 1)) {
     current_stop <- stops_table |> 
-      filter(depth_start > stop_list[i+1], depth_start <= stop_list[i])
-    next_stop <- stops_table |> 
-      filter(depth_start == stop_list[i+1]) |> 
-      first()
+      dplyr::filter(.data$depth_start > stop_list[i+1], .data$depth_start <= stop_list[i])
     
-    bloc[[i]] <- bind_rows(current_stop, next_stop) |> 
-      filter(!is.na(phase))
+    next_stop <- stops_table |> 
+      dplyr::filter(.data$depth_start == stop_list[i+1]) |> 
+      dplyr::first()
+    
+    bloc[[i]] <- dplyr::bind_rows(current_stop, next_stop) |> 
+      dplyr::filter(!is.na(.data$phase))
   }
   
   # For each bloc, we compute the time of the first stop based on the gradient 
@@ -87,19 +88,19 @@ create_stops_table <- function(dive_tbl, gradient_low = 0.85,
     
     if (i < length(bloc)) {
       bloc[[i+1]] <- bloc[[i]] |> 
-        last() |> 
-        bind_rows(bloc[[i+1]] |> slice(-1))
-      bloc[[i]] <- bloc[[i]] |> slice(-n())
+        dplyr::last() |> 
+        dplyr::bind_rows(bloc[[i+1]] |> dplyr::slice(-1))
+      bloc[[i]] <- bloc[[i]] |> dplyr::slice(-dplyr::n())
     }
     
   }
   
   # We put all blocs back together
-  bloc_final <- bind_rows(bloc)
+  bloc_final <- dplyr::bind_rows(bloc)
   
   # add we merge these stop segments with all other segments of the dive
   dive_tbl |> 
-    filter(!(phase == "ascent" & depth_start <= stop_list[1])) |> 
-    bind_rows(bloc_final)
+    dplyr::filter(!(.data$phase == "ascent" & .data$depth_start <= stop_list[1])) |> 
+    dplyr::bind_rows(bloc_final)
     
 }
