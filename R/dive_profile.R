@@ -13,6 +13,7 @@
 #' @param gradient_low Double. The low value of the factor gradient
 #' @param gradient_high Double. The high value of the factor gradient
 #' @param steps Double. The time increment (in decimal minutes) to add to each deco stop in order to reavch the appropriate stop duration. Smaller values give more precise results but will increase the computation time
+#' @param deco_type Character. Either "stops" (default) or "continuous". If "stops", the ascent is done by making stops every 3 meters from the first stop to the last stop. If "continuous", the decompression is done continuously, as a slow ascent from the first stop to the last stop. 
 #'
 #' @return A tibble with the dive profile where each row is a segment of the dive. See \code{dive_table} for a detailed description of each variable
 #' @export
@@ -21,11 +22,16 @@
 #' dive <- dive_profile(max_depth = 40, bottom_time = 50, speed_desc = 20, speed_asc = 10, 
 #'         last_stop = 4, ppO2_low = 0.7, ppO2_high = 1.3, 
 #'         ppO2_switch_depth = 15, diluent = c(21, 00), penalty = 3, 
-#'         gradient_low = 0.85, gradient_high = 0.90, steps = 0.25)
+#'         gradient_low = 0.85, gradient_high = 0.90, steps = 0.25, 
+#'         deco_type = "stops")
 #' dive |> print(n = Inf)
 dive_profile <- function(max_depth, bottom_time, speed_desc, speed_asc, last_stop, 
                          ppO2_low, ppO2_high, ppO2_switch_depth, diluent, penalty, 
-                         gradient_low, gradient_high, steps) {
+                         gradient_low, gradient_high, steps, 
+                         deco_type = c("stops", "continuous")) {
+  
+  # Check if the deco_type is valid
+  deco_type <- match.arg(deco_type, c("stops", "continuous"))
   
   # 1. Create the dive table
   # When diving with a CCR, the composition of the breathing gas in the loop  
@@ -53,17 +59,24 @@ dive_profile <- function(max_depth, bottom_time, speed_desc, speed_asc, last_sto
   # 2. Where is first stop?
   first_stop <- first_deco_stop(dive_tbl, gradient_low)
   
+  
   # 3. Add deco stops
   
-  # a. First, for all segments but the last 2
-  # b. Then, for the last 2 segments so that the ascent from the last stop  
-  #    to the surface is done at a normal speed, and without exceeding the 
-  #    gradient_high value.
-  dive_tbl <- dive_tbl |> 
-    deco_up_to_last(gradient_low, gradient_high, first_stop, last_stop, 
-                    steps, penalty) |> 
-    deco_last(last_stop = last_stop, speed_asc = speed_asc, 
-              penalty = penalty, steps = steps)
+  if (deco_type == "stops") {
+    dive_tbl <- dive_tbl |> 
+      create_stops_table(gradient_low, gradient_high, first_stop, last_stop, 
+                         steps, penalty)
+  } else if (deco_type == "continuous") {
+    # a. First, for all segments but the last 2
+    # b. Then, for the last 2 segments so that the ascent from the last stop  
+    #    to the surface is done at a normal speed, and without exceeding the 
+    #    gradient_high value.
+    dive_tbl <- dive_tbl |> 
+      deco_up_to_last(gradient_low, gradient_high, first_stop, last_stop, 
+                      steps, penalty) |> 
+      deco_last(last_stop = last_stop, speed_asc = speed_asc, 
+                penalty = penalty, steps = steps)
+  }
   
   return(dive_tbl)
 }

@@ -17,7 +17,8 @@ dive_profile(
   penalty,
   gradient_low,
   gradient_high,
-  steps
+  steps,
+  deco_type = c("stops", "continuous")
 )
 }
 \arguments{
@@ -46,6 +47,8 @@ dive_profile(
 \item{gradient_high}{Double. The high value of the factor gradient}
 
 \item{steps}{Double. The time increment (in decimal minutes) to add to each deco stop in order to reavch the appropriate stop duration. Smaller values give more precise results but will increase the computation time}
+
+\item{deco_type}{Character. Either "stops" (default) or "continuous". If "stops", the ascent is done by making stops every 3 meters from the first stop to the last stop. If "continuous", the decompression is done continuously, as a slow ascent from the first stop to the last stop.}
 }
 \value{
 A tibble with the dive profile where each row is a segment of the dive. See \code{dive_table} for a detailed description of each variable
@@ -57,6 +60,7 @@ Given a set of parameters for a dive, \code{profile} calculates the dive profile
 dive <- dive_profile(max_depth = 40, bottom_time = 50, speed_desc = 20, speed_asc = 10, 
         last_stop = 4, ppO2_low = 0.7, ppO2_high = 1.3, 
         ppO2_switch_depth = 15, diluent = c(21, 00), penalty = 3, 
-        gradient_low = 0.85, gradient_high = 0.90, steps = 0.25)
+        gradient_low = 0.85, gradient_high = 0.90, steps = 0.25, 
+        deco_type = "stops")
 dive |> print(n = Inf)
 }
